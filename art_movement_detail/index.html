@@ -73,11 +73,6 @@
       margin-top: 4px;
       cursor: pointer;
     }
-
-    .highlight-artist {
-      font-size: 16px;
-      margin-top: 16px;
-    }
   </style>
 </head>
 <body>
@@ -86,7 +81,7 @@
   <div class="slider-container">
     <div class="slider" id="slider">
       <div class="slide" style="background-image: url('paint_ex.jpg');"></div>
-      <!-- <div class="slide" style="background-image: url('another_image.jpg');"></div> -->
+      <div class="slide" style="background-image: url('another_image.jpg');"></div>
     </div>
   </div>
 
@@ -103,7 +98,6 @@
 
     <div class="show-more" onclick="toggleDescription()">Show more</div>
 
-    <div class="highlight-artist">Highlight artist</div>
   </div>
 
   <script>
@@ -118,8 +112,8 @@
     }
   </script>
   
-  // URL 에서 id 값 가져오기
   <script>
+    // URL 에서 id 값 가져오기
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
 
