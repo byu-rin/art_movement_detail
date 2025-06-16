@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Art Movement Detail</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #1e1e1e;
+      color: #fdf4e3; /* ai_curator_cream */
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      overflow: hidden;
+    }
+
+    .slider {
+      display: flex;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 500px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .card {
+      background-color: #2a2a2a;
+      border-radius: 16px;
+      margin: -40px 16px 0 16px;
+      padding: 16px;
+      z-index: 10;
+      position: relative;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .period {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .divider {
+      height: 1px;
+      background-color: #fdf4e3;
+      margin: 20px 0 16px;
+    }
+
+    .description {
+      font-size: 14px;
+      line-height: 1.5;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+    }
+
+    .show-more {
+      color: #ffa500; /* ai_curator_orange */
+      font-weight: bold;
+      margin-top: 4px;
+      cursor: pointer;
+    }
+
+    .highlight-artist {
+      font-size: 16px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Image Slider -->
+  <div class="slider-container">
+    <div class="slider" id="slider">
+      <div class="slide" style="background-image: url('paint_ex.jpg');"></div>
+      <!-- <div class="slide" style="background-image: url('another_image.jpg');"></div> -->
+    </div>
+  </div>
+
+  <!-- Content Card -->
+  <div class="card">
+    <div class="title">Renaissance</div>
+    <div class="period">1300 - 1600</div>
+
+    <div class="divider"></div>
+
+    <div class="description" id="description">
+      The Renaissance was a pivotal movement in European history, spanning from the 14th to the 17th century...
+    </div>
+
+    <div class="show-more" onclick="toggleDescription()">Show more</div>
+
+    <div class="highlight-artist">Highlight artist</div>
+  </div>
+
+  <script>
+    const description = document.getElementById('description');
+    const toggleBtn = document.querySelector('.show-more');
+    let expanded = false;
+
+    function toggleDescription() {
+      expanded = !expanded;
+      description.style.webkitLineClamp = expanded ? 'unset' : '4';
+      toggleBtn.textContent = expanded ? 'Show less' : 'Show more';
+    }
+  </script>
+</body>
+</html>
