@@ -46,7 +46,7 @@
       margin-bottom: 4px;
     }
 
-    .period {
+    .person {
       font-size: 14px;
       margin-bottom: 20px;
     }
@@ -92,13 +92,13 @@
 
   <!-- Content Card -->
   <div class="card">
-    <div class="title">Renaissance</div>
-    <div class="period">1300 - 1600</div>
+    <div class="title">작품 제목</div>
+    <div class="person">작가 이름</div>
 
     <div class="divider"></div>
 
     <div class="description" id="description">
-      The Renaissance was a pivotal movement in European history, spanning from the 14th to the 17th century...
+        작품 설명
     </div>
 
     <div class="show-more" onclick="toggleDescription()">Show more</div>
@@ -116,6 +116,31 @@
       description.style.webkitLineClamp = expanded ? 'unset' : '4';
       toggleBtn.textContent = expanded ? 'Show less' : 'Show more';
     }
+  </script>
+  
+  // URL 에서 id 값 가져오기
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    fetch('artworks.json')
+    .then(response => response.json())
+    .then(data => {
+      const art = data[id];
+
+      if (art) {
+        document.getElementById('title').textContent = art.title;
+        document.getElementById('person').textContent = art.person;
+        document.getElementById('desc').textContent = art.desc;
+        document.getElementById('slide').style.backgroundImage = `url('${art.image}')`;
+      } else {
+        document.getElementById('title').textContent = "작품을 찾을 수 없음";
+        document.getElementById('desc').textContent = "유효하지 않은 ID입니다.";
+      }
+    })
+    .catch(err => {
+      console.error("작품 데이터를 불러오지 못했습니다:", err);
+    });
   </script>
 </body>
 </html>

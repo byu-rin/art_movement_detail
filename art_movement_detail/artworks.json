@@ -1,0 +1,20 @@
+{
+    "1": {
+      "title": "작은 새",
+      "person": "이정민",
+      "desc": "이건 작은 새의 설명이에요.",
+      "image": "images/art1.jpg"
+    },
+    "2": {
+      "title": "꿀벌",
+      "person": "김보경",
+      "desc": "이건 작품 꿀벌의 설명이에요.",
+      "image": "images/art2.jpg"
+    },
+    "3": {
+      "title": "바다의 기억",
+      "person": "박소영",
+      "desc": "푸른 바다를 추억하며 그린 작품입니다.",
+      "image": "images/art3.jpg"
+    }
+  }
