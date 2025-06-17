@@ -151,53 +151,60 @@
   });
 
   function setupSwipe(slider, totalSlides) {
-    let isDown = false;
-    let startX;
-    let currentTranslate = 0;
-    let currentIndex = 0;
+  let startX = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+  let currentIndex = 0;
+  let animationID;
 
-    slider.addEventListener('mousedown', startDrag);
-    slider.addEventListener('touchstart', startDrag);
+  const sliderContainer = slider.parentElement;
+  const slideWidth = sliderContainer.offsetWidth;
 
-    slider.addEventListener('mousemove', onDrag);
-    slider.addEventListener('touchmove', onDrag);
+  // 모바일 터치 이벤트만 사용
+  slider.addEventListener('touchstart', touchStart, { passive: false });
+  slider.addEventListener('touchmove', touchMove, { passive: false });
+  slider.addEventListener('touchend', touchEnd);
 
-    slider.addEventListener('mouseup', endDrag);
-    slider.addEventListener('touchend', endDrag);
-
-    function startDrag(e) {
-      isDown = true;
-      startX = getX(e);
-    }
-
-    function onDrag(e) {
-      if (!isDown) return;
-      const x = getX(e);
-      const diff = x - startX;
-      slider.style.transform = `translateX(${currentTranslate + diff}px)`;
-    }
-
-    function endDrag(e) {
-      if (!isDown) return;
-      isDown = false;
-      const x = getX(e);
-      const diff = x - startX;
-
-      // 한 슬라이드 너비가 기준이므로 1/4 이상이면 슬라이드 넘기기
-      if (diff < -100 && currentIndex < totalSlides - 1) {
-        currentIndex++;
-      } else if (diff > 100 && currentIndex > 0) {
-        currentIndex--;
-      }
-
-      currentTranslate = -currentIndex * slider.clientWidth;
-      slider.style.transform = `translateX(${currentTranslate}px)`;
-    }
-
-    function getX(e) {
-      return e.touches ? e.touches[0].clientX : e.clientX;
-    }
+  function touchStart(e) {
+    startX = e.touches[0].clientX;
+    prevTranslate = currentTranslate;
+    cancelAnimationFrame(animationID);
   }
-  </script>
+
+  function touchMove(e) {
+    e.preventDefault(); // 모바일 스크롤 방지
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+    currentTranslate = prevTranslate + diff;
+    setSliderTransform();
+  }
+
+  function touchEnd(e) {
+    const movedBy = currentTranslate - prevTranslate;
+
+    // 기준 넘으면 슬라이드 변경
+    if (movedBy < -slideWidth / 4 && currentIndex < totalSlides - 1) {
+      currentIndex++;
+    } else if (movedBy > slideWidth / 4 && currentIndex > 0) {
+      currentIndex--;
+    }
+
+    currentTranslate = -currentIndex * slideWidth;
+    setSliderTransform(true);
+  }
+
+  function setSliderTransform(smooth = false) {
+    if (smooth) {
+      slider.style.transition = 'transform 0.3s ease';
+    } else {
+      slider.style.transition = 'none';
+    }
+    slider.style.transform = `translateX(${currentTranslate}px)`;
+  }
+
+  // 초기 정렬
+  setSliderTransform(true);
+}
+</script>
 </body>
 </html>
