@@ -21,7 +21,10 @@
 
     .slider {
       display: flex;
-      transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
+  will-change: transform;
+  touch-action: pan-y;
+  cursor: grab;
     }
 
     .slide {
@@ -57,7 +60,7 @@
       margin: 20px 0 16px;
     }
 
-    .description {
+    .desc {
       font-size: 14px;
       line-height: 1.5;
       overflow: hidden;
@@ -80,19 +83,17 @@
   <!-- Image Slider -->
   <div class="slider-container">
     <div class="slider" id="slider">
-      <div class="slide" style="background-image: url('paint_ex.jpg');"></div>
-      <div class="slide" style="background-image: url('another_image.jpg');"></div>
     </div>
   </div>
 
   <!-- Content Card -->
   <div class="card">
-    <div class="title">작품 제목</div>
-    <div class="person">작가 이름</div>
+    <div class="title" id="title">작품 제목</div>
+    <div class="person" id="person">작가 이름</div>
 
     <div class="divider"></div>
 
-    <div class="description" id="description">
+    <div class="desc" id="desc">
         작품 설명
     </div>
 
@@ -101,7 +102,7 @@
   </div>
 
   <script>
-    const description = document.getElementById('description');
+    const desc = document.getElementById('desc');
     const toggleBtn = document.querySelector('.show-more');
     let expanded = false;
 
@@ -126,15 +127,77 @@
         document.getElementById('title').textContent = art.title;
         document.getElementById('person').textContent = art.person;
         document.getElementById('desc').textContent = art.desc;
-        document.getElementById('slide').style.backgroundImage = `url('${art.image}')`;
-      } else {
-        document.getElementById('title').textContent = "작품을 찾을 수 없음";
-        document.getElementById('desc').textContent = "유효하지 않은 ID입니다.";
+
+        // 슬라이더에 이미지 추가
+      const slider = document.getElementById('slider');
+      slider.innerHTML = ''; // 기존 이미지 제거
+
+      const slides = Array.isArray(art.slides) ? art.slides : [art.slide];
+        slides.forEach(image => {
+          const slideDiv = document.createElement('div');
+          slideDiv.className = 'slide';
+          slideDiv.style.backgroundImage = `url('${image}')`;
+          slider.appendChild(slideDiv);
+        });
+
+        setupSwipe(slider, slides.length);
+      }  else {
+      document.getElementById('title').textContent = "작품을 찾을 수 없음";
+      document.getElementById('desc').textContent = "유효하지 않은 ID입니다.";
+    }
+  })
+  .catch(err => {
+    console.error("작품 데이터를 불러오지 못했습니다:", err);
+  });
+
+  function setupSwipe(slider, totalSlides) {
+    let isDown = false;
+    let startX;
+    let currentTranslate = 0;
+    let currentIndex = 0;
+
+    slider.addEventListener('mousedown', startDrag);
+    slider.addEventListener('touchstart', startDrag);
+
+    slider.addEventListener('mousemove', onDrag);
+    slider.addEventListener('touchmove', onDrag);
+
+    slider.addEventListener('mouseup', endDrag);
+    slider.addEventListener('touchend', endDrag);
+
+    function startDrag(e) {
+      isDown = true;
+      startX = getX(e);
+    }
+
+    function onDrag(e) {
+      if (!isDown) return;
+      const x = getX(e);
+      const diff = x - startX;
+      slider.style.transform = `translateX(${currentTranslate + diff}px)`;
+    }
+
+    function endDrag(e) {
+      if (!isDown) return;
+      isDown = false;
+      const x = getX(e);
+      const diff = x - startX;
+
+      // 한 슬라이드 너비가 기준이므로 1/4 이상이면 슬라이드 넘기기
+      if (diff < -100 && currentIndex < totalSlides - 1) {
+        currentIndex++;
+      } else if (diff > 100 && currentIndex > 0) {
+        currentIndex--;
       }
-    })
-    .catch(err => {
-      console.error("작품 데이터를 불러오지 못했습니다:", err);
-    });
+
+      currentTranslate = -currentIndex * slider.clientWidth;
+      slider.style.transform = `translateX(${currentTranslate}px)`;
+    }
+
+    function getX(e) {
+      return e.touches ? e.touches[0].clientX : e.clientX;
+    }
+  }
   </script>
 </body>
 </html>
