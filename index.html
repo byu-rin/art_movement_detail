@@ -1,210 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Art Movement Detail</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Arial', sans-serif;
-      background-color: #1e1e1e;
-      color: #fdf4e3; /* ai_curator_cream */
-    }
 
-    .slider-container {
-      position: relative;
-      width: 100%;
-      height: 500px;
-      overflow: hidden;
-    }
-
-    .slider {
-      display: flex;
-  transition: transform 0.3s ease-in-out;
-  will-change: transform;
-  touch-action: pan-y;
-  cursor: grab;
-    }
-
-    .slide {
-      min-width: 100%;
-      height: 500px;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .card {
-      background-color: #2a2a2a;
-      border-radius: 16px;
-      margin: -40px 16px 0 16px;
-      padding: 16px;
-      z-index: 10;
-      position: relative;
-    }
-
-    .title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 4px;
-    }
-
-    .person {
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-
-    .divider {
-      height: 1px;
-      background-color: #fdf4e3;
-      margin: 20px 0 16px;
-    }
-
-    .desc {
-      font-size: 14px;
-      line-height: 1.5;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-      text-overflow: ellipsis;
-    }
-
-    .show-more {
-      color: #ffa500; /* ai_curator_orange */
-      font-weight: bold;
-      margin-top: 4px;
-      cursor: pointer;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 </head>
+
 <body>
 
-  <!-- Image Slider -->
-  <div class="slider-container">
-    <div class="slider" id="slider">
+  <div class="banner">
+    <h1 class="banner-title">artWork</h1>
+  
+    <!-- 흰색 원 안에 Lottie 삽입 -->
+    <div class="tts-fab" title="작품 설명 듣기">
+      <dotlottie-player
+        src="https://lottie.host/6f58b670-8cb6-4b6d-8b18-1c429a5240ca/j8vFehG0zj.lottie"
+        background="transparent"
+        speed="1"
+        style="width: 36px; height: 36px"
+        loop
+        autoplay>
+      </dotlottie-player>
     </div>
   </div>
 
-  <!-- Content Card -->
+  <div class="slider-container">
+    <div class="slider" id="slider"></div>
+  </div>
+
   <div class="card">
     <div class="title" id="title">작품 제목</div>
     <div class="person" id="person">작가 이름</div>
-
     <div class="divider"></div>
-
-    <div class="desc" id="desc">
-        작품 설명
-    </div>
-
+    <div class="desc" id="desc">작품 설명</div>
     <div class="show-more" onclick="toggleDescription()">Show more</div>
-
   </div>
-
-  <script>
-    const desc = document.getElementById('desc');
-    const toggleBtn = document.querySelector('.show-more');
-    let expanded = false;
-
-    function toggleDescription() {
-      expanded = !expanded;
-      description.style.webkitLineClamp = expanded ? 'unset' : '4';
-      toggleBtn.textContent = expanded ? 'Show less' : 'Show more';
-    }
-  </script>
-  
-  <script>
-    // URL 에서 id 값 가져오기
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
-
-    fetch('artworks.json')
-    .then(response => response.json())
-    .then(data => {
-      const art = data[id];
-
-      if (art) {
-        document.getElementById('title').textContent = art.title;
-        document.getElementById('person').textContent = art.person;
-        document.getElementById('desc').textContent = art.desc;
-
-        // 슬라이더에 이미지 추가
-      const slider = document.getElementById('slider');
-      slider.innerHTML = ''; // 기존 이미지 제거
-
-      const slides = Array.isArray(art.slides) ? art.slides : [art.slide];
-        slides.forEach(image => {
-          const slideDiv = document.createElement('div');
-          slideDiv.className = 'slide';
-          slideDiv.style.backgroundImage = `url('${image}')`;
-          slider.appendChild(slideDiv);
-        });
-
-        setupSwipe(slider, slides.length);
-      }  else {
-      document.getElementById('title').textContent = "작품을 찾을 수 없음";
-      document.getElementById('desc').textContent = "유효하지 않은 ID입니다.";
-    }
-  })
-  .catch(err => {
-    console.error("작품 데이터를 불러오지 못했습니다:", err);
-  });
-
-  function setupSwipe(slider, totalSlides) {
-  let startX = 0;
-  let currentTranslate = 0;
-  let prevTranslate = 0;
-  let currentIndex = 0;
-  let animationID;
-
-  const sliderContainer = slider.parentElement;
-  const slideWidth = sliderContainer.offsetWidth;
-
-  // 모바일 터치 이벤트만 사용
-  slider.addEventListener('touchstart', touchStart, { passive: false });
-  slider.addEventListener('touchmove', touchMove, { passive: false });
-  slider.addEventListener('touchend', touchEnd);
-
-  function touchStart(e) {
-    startX = e.touches[0].clientX;
-    prevTranslate = currentTranslate;
-    cancelAnimationFrame(animationID);
-  }
-
-  function touchMove(e) {
-    e.preventDefault(); // 모바일 스크롤 방지
-    const currentX = e.touches[0].clientX;
-    const diff = currentX - startX;
-    currentTranslate = prevTranslate + diff;
-    setSliderTransform();
-  }
-
-  function touchEnd(e) {
-    const movedBy = currentTranslate - prevTranslate;
-
-    // 기준 넘으면 슬라이드 변경
-    if (movedBy < -slideWidth / 4 && currentIndex < totalSlides - 1) {
-      currentIndex++;
-    } else if (movedBy > slideWidth / 4 && currentIndex > 0) {
-      currentIndex--;
-    }
-
-    currentTranslate = -currentIndex * slideWidth;
-    setSliderTransform(true);
-  }
-
-  function setSliderTransform(smooth = false) {
-    if (smooth) {
-      slider.style.transition = 'transform 0.3s ease';
-    } else {
-      slider.style.transition = 'none';
-    }
-    slider.style.transform = `translateX(${currentTranslate}px)`;
-  }
-
-  // 초기 정렬
-  setSliderTransform(true);
-}
-</script>
+  <script src="script.js"></script>
 </body>
+
 </html>
