@@ -116,3 +116,17 @@ function setupSwipe(slider, totalSlides) {
     isDragging = false;
   }
 }
+
+// 오버레이 보이기
+function showOverlay() {
+  document.getElementById('overlay').style.display = 'flex';
+  document.body.classList.add('overlay-active');
+}
+
+// 오버레이 숨기기
+function hideOverlay() {
+  const overlay = document.getElementById('overlay');
+  overlay.style.display = 'none';
+  // body 요소 클릭 가능 복원
+  document.body.classList.remove('overlay-active');
+}

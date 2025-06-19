@@ -1,12 +1,78 @@
-* {
+/* * {
   outline: 1px solid red;
-}
+} */
 
 body {
   font-family: 'Arial', sans-serif;
   background-color: #1e1e1e;
   color: #fdf4e3;
 }
+
+/* 전체 화면 덮는 반투명 레이어 */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* 반투명 검정 */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* 하단에 위치 */
+  z-index: 9999;
+}
+
+.fab-overlay-wrapper {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px; /* fab과 content 사이 간격 */
+}
+
+/* 가짜 Lottie 버튼 - overlay 내부에 위치 */
+.tts-fab-fake {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 56px;
+  height: 56px;
+  background-color: #1e1e1e;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: co;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none; /* 클릭은 실제 .tts-fab에만 적용되도록 */
+  z-index: 1; /* overlay-content보다 아래로 필요시 조정 */
+}
+
+/* 닫기(X) 버튼 */
+.overlay-close {
+  position: absolute;
+  pointer-events: auto;
+  top: 12px;
+  left: 12px;
+  z-index: 10000;
+}
+
+/* 안내 콘텐츠 스타일 */
+.overlay-content {
+  position: static;
+  top: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.9); /* 반투명 흰 배경 */
+  padding: 4px 24px;
+  margin: 12px;
+  margin-top: 80px;
+  border-radius: 24px;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  pointer-events: auto; /* 이 영역은 클릭 가능 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
 .banner {
   width: 100%;
   height: 36px;
