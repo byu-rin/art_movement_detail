@@ -2,6 +2,11 @@ const desc = document.getElementById('desc');
 const toggleBtn = document.querySelector('.show-more');
 let expanded = false;
 
+// URL 에서 id 추출
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+
+// 오디오 엘리먼트와 Lottie 참조
 const audio = document.getElementById('narration');
 const lottie = document.getElementById('narrationLottie');
 let isPlaying = false;
@@ -26,10 +31,6 @@ function downloadImage(event) {
   a.click();
   document.body.removeChild(a);
 }
-
-// URL 에서 id 추출
-const params = new URLSearchParams(window.location.search);
-const id = params.get('id');
 
 fetch('artworks.json')
   .then(response => response.json())
@@ -164,7 +165,7 @@ audio.addEventListener('ended', () => {
   isPlaying = false;
 });
 
-// 클릭 시 토글 동작
+// 클릭 시 오디오 재생/정지 토글 + 오버레이 제거
 function toggleAudioPlayback() {
   if (isPlaying) {
     audio.pause(); // 이미 재생 중이면 멈춤
@@ -178,4 +179,9 @@ function toggleAudioPlayback() {
     overlay.style.display = 'none';
     document.body.classList.remove('overlay-active');
   }
+}
+
+// 해당 작품 id에 맞는 오디오 경로 지정
+if (id) {
+  audio.src = `audio/${id}.mp3`;
 }
