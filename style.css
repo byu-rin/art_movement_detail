@@ -2,13 +2,14 @@
   outline: 1px solid red;
 } */
 
+/* ========== 기본 설정 ========== */
 body {
   font-family: 'Arial', sans-serif;
   background-color: #1e1e1e;
   color: #fdf4e3;
 }
 
-/* 전체 화면 덮는 반투명 레이어 */
+/* ========== 오버레이 ========== */
 .overlay {
   position: fixed;
   top: 0; left: 0;
@@ -20,12 +21,26 @@ body {
   z-index: 9999;
 }
 
+/* 닫기(X) 버튼 */
+.overlay-close {
+  position: absolute;
+  pointer-events: auto;
+  top: 12px;
+  left: 12px;
+  z-index: 10000;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+}
+
 .fab-overlay-wrapper {
   position: absolute;
   right: 16px;
   top: 16px;
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 12px; /* fab과 content 사이 간격 */
 }
@@ -48,61 +63,38 @@ body {
   z-index: 1; /* overlay-content보다 아래로 필요시 조정 */
 }
 
-/* 닫기(X) 버튼 */
-.overlay-close {
-  position: absolute;
-  pointer-events: auto;
-  top: 12px;
-  left: 12px;
-  z-index: 10000;
-}
-
 /* 안내 콘텐츠 스타일 */
 .overlay-content {
-  position: static;
-  top: 0;
-  right: 0;
   background-color: rgba(255, 255, 255, 0.9); /* 반투명 흰 배경 */
   padding: 0px 16px;
-  margin: 16px;
-  margin-top: 64px;
+  margin: 64px 16px 16px;
   border-radius: 24px;
   font-size: 16px;
   color: #333;
   text-align: center;
-  pointer-events: auto; /* 이 영역은 클릭 가능 */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* ========== 배너 영역 ========== */
 .banner {
   width: 100%;
   height: 36px;
   background-color: #1e1e1e; /* 연한 회색 계열 */
-  display: flex;
-  justify-content: center;
   padding: 16px 0;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 살짝 그림자 */
   position: relative;
   top: 0;
   z-index: 100;
-  margin-bottom: 0;
-}
-
-.banner-title-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* 텍스트와 로티 간격 */
 }
 
 .banner-title {
   font-size: 16px;
   color: #c9c9c9; /* 어두운 회색 텍스트 */
   font-weight: bold;
-  text-align: center;
 }
 
-/* 흰색 원 + 그림자 + 클릭 가능하게 */
+/* ========== Lottie FAB 버튼 ========== */
 .tts-fab {
   position: absolute;
   right: 16px;
@@ -134,19 +126,19 @@ body {
   flex-shrink: 0;
 }
 
+/* ========== Lottie FAB 버튼 ========== */
 .slide-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
+/* ========== 카드 ========== */
 .card {
   background-color: #2a2a2a;
   border-radius: 16px;
   margin: 16px;
-  margin-bottom: 0;
   padding: 16px;
-  position: relative;
 }
 
 .title {
