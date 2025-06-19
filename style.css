@@ -34,7 +34,7 @@ body {
 .tts-fab-fake {
   position: absolute;
   right: 16px;
-  top: 16px;
+  top: 0px;
   width: 56px;
   height: 56px;
   background-color: #1e1e1e;
@@ -43,7 +43,8 @@ body {
   flex-direction: co;
   align-items: center;
   justify-content: center;
-  pointer-events: none; /* 클릭은 실제 .tts-fab에만 적용되도록 */
+  pointer-events: auto; /* 클릭은 실제 .tts-fab에만 적용되도록 */
+  cursor: pointer;
   z-index: 1; /* overlay-content보다 아래로 필요시 조정 */
 }
 
@@ -62,9 +63,9 @@ body {
   top: 0;
   right: 0;
   background-color: rgba(255, 255, 255, 0.9); /* 반투명 흰 배경 */
-  padding: 4px 24px;
-  margin: 12px;
-  margin-top: 80px;
+  padding: 0px 16px;
+  margin: 16px;
+  margin-top: 64px;
   border-radius: 24px;
   font-size: 16px;
   color: #333;

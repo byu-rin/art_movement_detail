@@ -2,6 +2,12 @@ const desc = document.getElementById('desc');
 const toggleBtn = document.querySelector('.show-more');
 let expanded = false;
 
+const audio = document.getElementById('narration');
+const lottie = document.getElementById('narrationLottie');
+let isPlaying = false;
+
+const overlay = document.getElementById('overlay');
+
 function toggleDescription() {
   expanded = !expanded;
   desc.style.webkitLineClamp = expanded ? 'unset' : '4';
@@ -125,8 +131,51 @@ function showOverlay() {
 
 // 오버레이 숨기기
 function hideOverlay() {
-  const overlay = document.getElementById('overlay');
   overlay.style.display = 'none';
   // body 요소 클릭 가능 복원
   document.body.classList.remove('overlay-active');
+}
+
+function playAudio() {
+  audio.currentTime = 0; // 처음부터 재생
+  audio.play();
+}
+
+function playAudioAndHideOverlay() {
+  // 오디오 재생
+  playAudio()
+  // 오버레이 숨기기
+  hideOverlay()
+}
+
+// 오디오 상태에 따라 Lottie 애니메이션 조정
+audio.addEventListener('play', () => {
+  lottie.play(); // Lottie 애니메이션 재생
+  isPlaying = true;
+});
+
+audio.addEventListener('pause', () => {
+  lottie.pause(); // Lottie 애니메이션 정지
+  isPlaying = false;
+});
+
+audio.addEventListener('ended', () => {
+  lottie.pause();
+  isPlaying = false;
+});
+
+// 클릭 시 토글 동작
+function toggleAudioPlayback() {
+  if (isPlaying) {
+    audio.pause(); // 이미 재생 중이면 멈춤
+  } else {
+    audio.currentTime = 0;
+    audio.play(); // 정지 상태면 처음부터 재생
+  }
+
+  // 오버레이 숨기기도 원하면 여기에 추가
+  if (overlay) {
+    overlay.style.display = 'none';
+    document.body.classList.remove('overlay-active');
+  }
 }

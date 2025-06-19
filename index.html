@@ -18,7 +18,7 @@
 
     <div class="fab-overlay-wrapper">
       <!--lottie btn image(구멍 뚫린 강조 fake)-->
-      <div class="tts-fab-fake">
+      <div class="tts-fab-fake" onclick="playAudioAndHideOverlay()">
         <dotlottie-player src="https://lottie.host/6f58b670-8cb6-4b6d-8b18-1c429a5240ca/j8vFehG0zj.lottie"
           background="transparent" speed="1" style="width: 36px; height: 36px" loop autoplay>
         </dotlottie-player>
@@ -34,10 +34,13 @@
     <h1 class="banner-title">artWork</h1>
 
     <!-- 원 안에 Lottie 삽입 -->
-    <div class="tts-fab" title="작품 설명 듣기">
-      <dotlottie-player src="https://lottie.host/6f58b670-8cb6-4b6d-8b18-1c429a5240ca/j8vFehG0zj.lottie"
+    <div class="tts-fab" title="작품 설명 듣기" onclick="toggleAudioPlayback()">
+      <dotlottie-player 
+      id="narrationLottie"
+      src="https://lottie.host/6f58b670-8cb6-4b6d-8b18-1c429a5240ca/j8vFehG0zj.lottie"
         background="transparent" speed="1" style="width: 36px; height: 36px" loop autoplay>
       </dotlottie-player>
+      <audio id="narration" src="narration.mp3"></audio>
     </div>
   </div>
 
